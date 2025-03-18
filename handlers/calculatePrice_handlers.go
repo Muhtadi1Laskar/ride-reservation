@@ -18,7 +18,7 @@ type PriceRequestBody struct {
 type CarPriceResponse struct {
 	CarType string `json:"carType"`
 	TotalSeats int `json:"totalSeats"`
-	Price int `json:"price"`
+	Price float32 `json:"price"`
 }
 
 func Rides(w http.ResponseWriter, r *http.Request) {
@@ -33,9 +33,9 @@ func Rides(w http.ResponseWriter, r *http.Request) {
 	responseBody := CarPriceResponse{
 		CarType: "Sedan",
 		TotalSeats: 4,
-		Price: int(totalPrice),
+		Price: totalPrice,
 	}
-	
+
 	WriteJSONResponse(w, http.StatusAccepted, responseBody)
 }
 
