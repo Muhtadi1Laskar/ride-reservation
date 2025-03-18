@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"encoding/json"
-	"io"
 	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
@@ -58,5 +58,5 @@ func WriteJSONResponse(w http.ResponseWriter, statusCode int, response interface
 }
 
 func WriteError(w http.ResponseWriter, statusCode int, err string) {
-	WriteJSONResponse(w, statusCode, ErrorResponse{ Error: err })
+	WriteJSONResponse(w, statusCode, ErrorResponse{Error: err})
 }

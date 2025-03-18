@@ -5,20 +5,20 @@ import (
 )
 
 type PriceRequestBody struct {
-	ServiceType string `json:"serviceType" validate:"required"`
-	PickupDate string `json:"pickupDate" validate:"required"`
-	PickupTime string `json:"pickupTime" validate:"required"`
-	PickupLocation string `json:"pickupLocation" validate:"required"`
-	DropoffLocation string `json:"dropoffLocation" validate:"required"`
-	Milage float32 `json:"mileage" validate:"required"`
-	Passengers int `json:"passengers" validate:"required"`
-	Luggage int `json:"luggage" validate:"required"`
+	ServiceType     string  `json:"serviceType" validate:"required"`
+	PickupDate      string  `json:"pickupDate" validate:"required"`
+	PickupTime      string  `json:"pickupTime" validate:"required"`
+	PickupLocation  string  `json:"pickupLocation" validate:"required"`
+	DropoffLocation string  `json:"dropoffLocation" validate:"required"`
+	Milage          float32 `json:"mileage" validate:"required"`
+	Passengers      int     `json:"passengers" validate:"required"`
+	Luggage         int     `json:"luggage" validate:"required"`
 }
 
 type CarPriceResponse struct {
-	CarType string `json:"carType"`
-	TotalSeats int `json:"totalSeats"`
-	Price float32 `json:"price"`
+	CarType    string  `json:"carType"`
+	TotalSeats int     `json:"totalSeats"`
+	Price      float32 `json:"price"`
 }
 
 func Rides(w http.ResponseWriter, r *http.Request) {
@@ -31,9 +31,9 @@ func Rides(w http.ResponseWriter, r *http.Request) {
 	totalPrice := calculatePrice(requestBody.Milage)
 
 	responseBody := CarPriceResponse{
-		CarType: "Sedan",
+		CarType:    "Sedan",
 		TotalSeats: 4,
-		Price: totalPrice,
+		Price:      totalPrice,
 	}
 
 	WriteJSONResponse(w, http.StatusAccepted, responseBody)
