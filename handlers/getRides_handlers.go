@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"net/http"
+	"ride-reservation/helpers"
+	"ride-reservation/services"
 )
 
 type PriceRequestBody struct {
@@ -15,10 +17,16 @@ type PriceRequestBody struct {
 	Luggage         int     `json:"luggage" validate:"required"`
 }
 
+type CarType struct {
+	Type  string  `json:"type"`
+	Name  string  `json:"name"`
+	Seats int     `json:"seats"`
+	Price float32 `json:"price"`
+}
+
 type CarPriceResponse struct {
-	CarType    string  `json:"carType"`
-	TotalSeats int     `json:"totalSeats"`
-	Price      float32 `json:"price"`
+	Vehicle []CarType `json:"vehicle"`
+	Mileage float32   `json:"mileage"`
 }
 
 func Rides(w http.ResponseWriter, r *http.Request) {
@@ -28,23 +36,34 @@ func Rides(w http.ResponseWriter, r *http.Request) {
 		WriteError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	totalPrice := calculatePrice(requestBody.Milage)
+	mileage := services.GetMileage(requestBody.PickupLocation, requestBody.DropoffLocation)
+	vehicles := helpers.GetVehicle(requestBody.Passengers)
+
+	var carTypes []CarType
+	for _, vehicle := range vehicles {
+		carTypes = append(carTypes, CarType{
+			Type:  vehicle["type"].(string),
+			Name:  vehicle["name"].(string),
+			Seats: vehicle["totalSeats"].(int),
+			Price: calculatePrice(mileage, vehicle["price"].(int)),
+		})
+	}
 
 	responseBody := CarPriceResponse{
-		CarType:    "Sedan",
-		TotalSeats: 4,
-		Price:      totalPrice,
+		Vehicle: carTypes,
+		Mileage: mileage,
 	}
 
 	WriteJSONResponse(w, http.StatusAccepted, responseBody)
 }
 
-func calculatePrice(mileage float32) float32 {
+func calculatePrice(mileage float32, vehicleFare int) float32 {
 	var totalPrice float32 = 60.00
 
 	if mileage > 2 {
 		totalPrice += (mileage - 2) * 4
 
 	}
-	return totalPrice
+
+	return totalPrice + float32(vehicleFare)
 }
