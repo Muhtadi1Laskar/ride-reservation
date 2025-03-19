@@ -7,20 +7,21 @@ import (
 )
 
 type PriceRequestBody struct {
-	ServiceType     string  `json:"serviceType" validate:"required"`
-	PickupDate      string  `json:"pickupDate" validate:"required"`
-	PickupTime      string  `json:"pickupTime" validate:"required"`
-	PickupLocation  string  `json:"pickupLocation" validate:"required"`
-	DropoffLocation string  `json:"dropoffLocation" validate:"required"`
-	Passengers      int     `json:"passengers" validate:"required"`
-	Luggage         int     `json:"luggage" validate:"required"`
+	ServiceType     string `json:"serviceType" validate:"required"`
+	PickupDate      string `json:"pickupDate" validate:"required"`
+	PickupTime      string `json:"pickupTime" validate:"required"`
+	PickupLocation  string `json:"pickupLocation" validate:"required"`
+	DropoffLocation string `json:"dropoffLocation" validate:"required"`
+	Passengers      int    `json:"passengers" validate:"required"`
+	Luggage         int    `json:"luggage" validate:"required"`
 }
 
 type CarType struct {
-	Type  string  `json:"type"`
-	Name  string  `json:"name"`
-	Seats int     `json:"seats"`
-	Price float32 `json:"price"`
+	Type    string  `json:"type"`
+	Name    string  `json:"name"`
+	Seats   int     `json:"seats"`
+	Luggage int     `json:"luggage"`
+	Price   float32 `json:"price"`
 }
 
 type CarPriceResponse struct {
@@ -36,7 +37,7 @@ func Rides(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	mileage := services.GetMileage(requestBody.PickupLocation, requestBody.DropoffLocation)
-	vehicles := helpers.GetVehicle(requestBody.Passengers)
+	vehicles := helpers.GetVehicle(requestBody.Passengers, requestBody.Luggage)
 
 	var carTypes []CarType
 	for _, vehicle := range vehicles {
@@ -44,6 +45,7 @@ func Rides(w http.ResponseWriter, r *http.Request) {
 			Type:  vehicle["type"].(string),
 			Name:  vehicle["name"].(string),
 			Seats: vehicle["totalSeats"].(int),
+			Luggage: vehicle["luggageCapacity"].(int),
 			Price: calculatePrice(mileage, vehicle["price"].(int)),
 		})
 	}
