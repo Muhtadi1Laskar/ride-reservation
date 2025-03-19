@@ -2,13 +2,13 @@ package helpers
 
 var Vehicles = []map[string]any{
 	{
-		"type": "sedan",
+		"type": "Sedan",
 		"name": "Toyota",
 		"totalSeats": 5,
 		"price": 10,
 	},
 	{
-		"type": "hatchback",
+		"type": "Hatchback",
 		"name": "Nissian",
 		"totalSeats": 8,
 		"price": 25,
