@@ -25,6 +25,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/ride", handlers.Rides)
+	mux.HandleFunc("/payment", handlers.PaymentHandler)
 
 	fmt.Println("Server running on 5000")
 	http.ListenAndServe(":5000", enableCORS(mux))
