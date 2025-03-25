@@ -28,7 +28,10 @@ func GetVehicle(passengers, luggage int) []map[string]any {
 	var selectedVehicles []map[string]any
 
 	for _, item := range Vehicles {
-		if item["totalSeats"].(int) >= passengers && item["luggageCapacity"].(int) >= luggage {
+		seats := item["totalSeats"].(int)
+		capacity := item["luggageCapacity"].(int)
+
+		if seats >= passengers && (luggage == 0 || capacity >= luggage) {
 			selectedVehicles = append(selectedVehicles, item)
 		}
 	}
