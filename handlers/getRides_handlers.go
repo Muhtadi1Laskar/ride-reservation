@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"math"
 	"net/http"
 	"ride-reservation/helpers"
 	"ride-reservation/services"
@@ -66,5 +67,6 @@ func calculatePrice(mileage float32, vehicleFare int) float32 {
 
 	}
 
-	return totalPrice + float32(vehicleFare)
+	finalPrice := totalPrice + float32(vehicleFare)
+	return float32(math.Round(float64(finalPrice*100)) / 100)
 }
