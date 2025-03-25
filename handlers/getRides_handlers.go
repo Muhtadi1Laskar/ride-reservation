@@ -13,7 +13,7 @@ type PriceRequestBody struct {
 	PickupLocation  string `json:"pickupLocation" validate:"required"`
 	DropoffLocation string `json:"dropoffLocation" validate:"required"`
 	Passengers      int    `json:"passengers" validate:"required"`
-	Luggage         int    `json:"luggage" validate:"required"`
+	Luggage         int    `json:"luggage"`
 }
 
 type CarType struct {
